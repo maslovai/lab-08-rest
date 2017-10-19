@@ -3,41 +3,39 @@ const http = require('http');
 const router = require('./router');
 const note = require('./note-router');
 // require('dotenv').config();
-const server = module.exports = http.createServer(router.route);
+const app = module.exports = http.createServer(router.route);
 let isRunning = false;
 
 module.exports = {
-  start: ()=>{
-    return new Promise((resolve, reject)=>{
-      if (!isRunning){
-        server.listen(process.env.PORT, (err)=>{
-          if (err){
-            reject(err)
-          }
+  start: () => {
+    return new Promise((resolve, reject) => {
+      if (! isRunning){
+        app.listen(process.env.PORT, (err) => {
+          if (err) reject(err);
           else {
             isRunning = true;
-            resolve('Server running on port ${process.env.PORT}')
+            resolve(console.log(`Server running on port ${process.env.PORT}`));
           }
         })
       }
-      else reject('Server is already running on port ${process.env.PORT}')
+      else reject(console.log(`Server is already running on port ${process.env.PORT}`));
     })
   },
-  stop: ()=>{
-    return new Promise((resolve, reject)=>{
+  stop: () => {
+    return new Promise((resolve, reject) => {
         if(!isRunning){
-          reject('server is already off');
+          reject(console.log('server is already off'));
         }
         else{
-          server.close((err) => {
+          app.close(err => {
             if (err) reject(err)
-            else{
+            else {
               isRunning = false;
-              resolve('Shutting down');
+              resolve(console.log('Shutting down'));
             }
           })
         }
     })
   }
 }
-server.listen(process.env.PORT, console.log('running on', process.env.PORT));
+// server.listen(process.env.PORT, console.log('running on', process.env.PORT));

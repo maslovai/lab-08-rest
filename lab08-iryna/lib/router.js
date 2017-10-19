@@ -8,22 +8,32 @@ const routeHandlers = {
   DELETE: {}
 };
 module.exports = {
-  get: (url, callback) => {
-    routeHandlers.GET[url] = callback;
+  get: (uri, callback) => {
+    routeHandlers.GET[uri] = callback;
   },
-  post: (url, callback) => {
-    routeHandlers.POST[url] = callback;
+  put: (uri, callback) => {
+    routeHandlers.PUT[uri] = callback;
+  },
+  post: (uri, callback) => {
+    routeHandlers.POST[uri] = callback;
+  },
+  patch: (uri, callback) => {
+    routeHandlers.PATCH[uri] = callback;
+  },
+  delete: (uri, callback) => {
+    routeHandlers.DELETE[uri] = callback;
   },
   route: (req, res) => {
   // parse req
   //return 400 if invalid
   //find handler (400 if not there)
   parse(req)
-  .then( (req) =>{
+  .then( (req) => {
+    // console.log("post:", routeHandlers[req.method]);
     let handler = routeHandlers[req.method][req.url.pathname];
-    if (handler) return(req, res)
+    if (handler) return handler(req, res)
     else {
-      console.log('not found: ', req.url.pathname);
+      console.log('not found: ', req.method, req.url.pathname);
       res.writeHead(400);
       res.end();
     }
