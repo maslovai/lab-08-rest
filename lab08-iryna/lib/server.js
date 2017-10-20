@@ -10,6 +10,7 @@ module.exports = {
   start: () => {
     return new Promise((resolve, reject) => {
       if (! isRunning){
+        // process.env.PORT = 8070; 
         app.listen(process.env.PORT, (err) => {
           if (err) reject(err);
           else {

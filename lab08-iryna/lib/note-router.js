@@ -28,13 +28,17 @@ router.get('/api/notes',(req, res) => {
 });
 
 router.post('/api/notes',(req, res) =>{
-    if (!req.body) return sendStatus(res, 400, "bad request");
+    if (!req.body) return sendStatus(res, 400, "bad request, missing body")
+    else
     if(!req.body.title) return sendStatus(res, 400, "Missing Title");
-    if(!req.body.content) return sendStatus(res, 400, "Missing Content");
-    let note = new Note(req.body);
-    notes.push(note);
-    console.log("all notes: ",notes);
-    sendJSON(res, 200, note)
+    else
+    if(!req.body.content) return sendStatus(res, 400, "Missing Content")
+    else{
+      let note = new Note(req.body);
+      notes.push(note);
+      console.log("all notes: ",notes);
+      sendJSON(res, 200, note)
+     }
 });
 
 router.put('/api/notes',(req, res) =>{
